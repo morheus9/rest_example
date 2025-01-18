@@ -1,4 +1,7 @@
-# version: '3.9'
+# docker-compose up
+# sudo podman compose up
+# Look to Mongo-Express at http://localhost:8081
+
 services:
 #  app:
 #    container_name: app
