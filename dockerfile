@@ -13,4 +13,4 @@ LABEL Name=appName Version=0.0.1
 RUN apk --no-cache add ca-certificates
 COPY --from=builder /go/bin/app /app
 ENTRYPOINT ./app
-# EXPOSE 80
+# EXPOSE 10000
