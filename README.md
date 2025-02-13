@@ -1,11 +1,10 @@
 # rest_example
 Rest example with stack:
 - postgresql
-- sqlx
-- sqlc
+- pgx
+- tern
 - slog
 - swagger
-- golang-migrate
 
 #### Check .env:
 ```
