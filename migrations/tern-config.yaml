@@ -1,4 +1,0 @@
-# migrations/tern-config.yaml
-dir: migrations
-dsn: "postgres://user:password@localhost:5432/dbname?sslmode=disable"
-dialect: postgres

@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"log"
-	"net/http"
+	"net/http" // стандартный пакет http
 	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -11,7 +11,7 @@ import (
 	"github.com/morheus9/rest_example/internal/config"
 	"github.com/morheus9/rest_example/internal/repository"
 	"github.com/morheus9/rest_example/internal/service"
-	"github.com/morheus9/rest_example/internal/transport/http"
+	transportHTTP "github.com/morheus9/rest_example/internal/transport/http" // алиас для внутреннего http-пакета
 )
 
 func main() {
@@ -34,10 +34,10 @@ func main() {
 	// Инициализируем репозиторий, сервисы и HTTP-обработчики
 	userRepo := repository.NewPgUserRepository(dbpool)
 	userService := service.NewUserService(userRepo)
-	handler := http.NewHandler(userService)
+	handler := transportHTTP.NewHandler(userService)
 
 	// Инициализируем роутер
-	router := http.NewRouter(handler)
+	router := transportHTTP.NewRouter(handler)
 
 	// Запуск HTTP-сервера
 	address := cfg.ServerAddress

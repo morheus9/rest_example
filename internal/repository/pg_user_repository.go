@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/jackc/pgx/v5/pgxpool"
+
 	"github.com/morheus9/rest_example/internal/domain"
 )
 

@@ -7,10 +7,10 @@
     $ go mod tidy
 
     Примените миграции:
-
-    Если у вас установлен Tern:
-
-    $ tern migrate -config migrations/tern-config.yaml
+    export GOBIN="$HOME/tools"
+    go install github.com/jackc/tern/v2@latest
+    cd migratoions
+    tern migrate ./
 
     Это применит миграцию для создания таблицы users.
 
