@@ -1,3 +1,36 @@
+10. Запуск и тестирование
+
+─────────────────────────────
+
+    Установите зависимости:
+
+    $ go mod tidy
+
+    Примените миграции:
+
+    Если у вас установлен Tern:
+
+    $ tern migrate -config migrations/tern-config.yaml
+
+    Это применит миграцию для создания таблицы users.
+
+    Запустите сервер:
+
+    $ go run cmd/server/main.go
+
+    Тестируйте API с помощью curl или Postman:
+
+Создать пользователя:
+
+curl -X POST -H "Content-Type: application/json" -d '{"name": "John Doe", "email": "john@example.com"}' http://localhost:8080/users
+
+Получить пользователя:
+
+curl http://localhost:8080/users/1
+
+
+
+
 # rest_example
 Rest example with stack:
 - postgresql
