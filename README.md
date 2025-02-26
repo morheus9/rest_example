@@ -5,7 +5,9 @@
     Установите зависимости:
 
     $ go mod tidy
-
+  cd infra
+  podman-compose -f docker-compose-postgres.yaml  up
+  podman-compose -f docker-compose-postgres.yaml  down --volumes
     Примените миграции:
     export GOBIN="$HOME/tools"
     go install github.com/jackc/tern/v2@latest
@@ -16,7 +18,7 @@
 
     Запустите сервер:
 
-    $ go run cmd/server/main.go
+    go run cmd/server/main.go
 
     Тестируйте API с помощью curl или Postman:
 
