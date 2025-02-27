@@ -28,11 +28,11 @@ tern migrate ./
 go run cmd/server/main.go
 ```
 #### Test the API using curl or Postman:
-#### Create user:
+- Create user:
 ```
 curl -X POST -H "Content-Type: application/json" -d '{"name": "John Doe", "email": "john@example.com"}' http://localhost:8080/users
 ```
-#### Get a user:
+- Get a user:
 ```
 curl http://localhost:8080/users/1
 ```
