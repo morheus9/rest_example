@@ -1,6 +1,6 @@
 # Just easy rest app on go.
 Stack
-- postgresql
+- postgress
 - pgx
 - tern
 ## Launch and testing
