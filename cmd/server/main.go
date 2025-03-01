@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"log"
-	"net/http" // стандартный пакет http
+	"net/http"
 	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
