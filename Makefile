@@ -13,7 +13,10 @@ test-coverage:
 	go tool cover -func cover.out | grep total | awk '{print $3}'
 
 create-migration:
-
+	export GOBIN="$HOME/tools"
+	go install github.com/jackc/tern/v2@latest
+	cd migratoions
+	tern migrate ./
 migrate:
 
 migrate-down:
