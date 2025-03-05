@@ -3,9 +3,6 @@ package http
 import (
 	"encoding/json"
 	"net/http"
-	"strconv"
-
-	"github.com/julienschmidt/httprouter"
 
 	"github.com/morheus9/rest_example/internal/domain"
 	userService "github.com/morheus9/rest_example/internal/service"
@@ -19,7 +16,7 @@ func NewHandler(us userService.UserService) *Handler {
 	return &Handler{userService: us}
 }
 
-func (h *Handler) CreateUser(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+func (h *Handler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	// Декодируем JSON-запрос в структуру запроса
 	var userRequest struct {
 		Name  string `json:"name"`
@@ -54,14 +51,7 @@ func (h *Handler) CreateUser(w http.ResponseWriter, r *http.Request, ps httprout
 	w.Write(resp)
 }
 
-func (h *Handler) GetUser(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	idStr := ps.ByName("id")
-	id, err := strconv.ParseInt(idStr, 10, 64)
-	if err != nil {
-		http.Error(w, "Invalid id", http.StatusBadRequest)
-		return
-	}
-
+func (h *Handler) GetUser(w http.ResponseWriter, r *http.Request, id int64) {
 	// Получаем пользователя через сервис
 	user, err := h.userService.GetUser(r.Context(), id)
 	if err != nil {
