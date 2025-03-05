@@ -18,10 +18,9 @@ podman-compose -f docker-compose-postgres.yaml  down --volumes
 ```
 #### Appy migrations from tern. This is to apply migration to create the users table:
 ```
-export GOBIN="$HOME/tools"
 go install github.com/jackc/tern/v2@latest
-cd migratoions
-tern migrate ./
+export PATH=$PATH:$HOME/go/bin
+cd migrations && tern migrate ./
 ```
 #### Start server:
 ```
