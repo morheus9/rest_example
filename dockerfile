@@ -1,16 +1,22 @@
-# build stage
-FROM golang:alpine AS builder
-RUN apk add --no-cache git gcc libc-dev
-WORKDIR /go/src/app
-COPY . .
-RUN go mod edit -module app
-RUN go get -d -v ./...
-RUN go install -v ./...
+# Install dependencies
+FROM golang:1.24.1-bookworm AS deps
+WORKDIR /app
+COPY go.mod go.sum ./
+RUN go mod download
 
-# final stage
-FROM alpine:latest
-LABEL Name=appName Version=0.0.1
-RUN apk --no-cache add ca-certificates
-COPY --from=builder /go/bin/app /app
-ENTRYPOINT ./app
-# EXPOSE 10000
+# Build
+FROM golang:1.24.1-bookworm AS builder
+WORKDIR /app
+COPY --from=deps /go/pkg /go/pkg
+COPY . .
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o main ./cmd/server
+
+# Run
+FROM debian:bookworm-slim
+WORKDIR /app
+RUN groupadd -r appuser && useradd -r -g appuser appuser
+COPY --from=builder /app/main .
+RUN chown appuser:appuser /app/main
+USER appuser
+
+CMD ["./main"]
