@@ -10,7 +10,7 @@ Stack
 #### Start postgres and pgadmin from docker compose or podman-compose
 ```
 cd infra
-podman-compose -f docker-compose-postgres.yaml  up
+podman-compose -f docker-compose-postgres.yaml up
 ```
 #### For delete volumes:
 ```

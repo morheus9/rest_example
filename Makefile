@@ -1,8 +1,9 @@
 build:
-	go mod download && CGO_ENABLED=0 GOOS=linux go build -o ./bin ./cmd/app/main.go
+	go mod download && CGO_ENABLED=0 GOOS=linux go build -o ./bin ./cmd/server/main.go
 
 run:
-	docker-compose up --remove-orphans --build server
+#cd infra && docker-compose -f docker-compose-postgres.yaml up --remove-orphans 
+	cd infra && podman-compose -f docker-compose-postgres.yaml up --remove-orphans
 
 test:
 	go test ./... -coverprofile cover.out
