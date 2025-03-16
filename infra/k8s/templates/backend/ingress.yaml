@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: myapp-ingress
+  annotations:
+#    nginx.ingress.kubernetes.io/ssl-redirect: "true"  # Включает перенаправление на HTTPS
+spec:
+  rules:
+    - host: myapp.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: myapp
+                port:
+                  number: 80
+#  tls:
+#    - hosts:
+#        - myapp.local
+#      secretName: myapp-tls-secret  # Имя секрета с TLS-сертификатом

@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      initContainers:
+      - name: db-migrate
+        image: morheus/rest_example:latest  # Образ с Tern и миграциями
+        command: 
+          - "/bin/sh"
+          - "-c"
+          - |
+            # Ожидание доступности БД
+            until nc -z $DB_HOST $DB_PORT; do
+              echo "⏳ Waiting for PostgreSQL to start..."
+              sleep 2
+            done
+
+            # Выполнение миграций
+            echo "🚀 Starting migrations..."
+            /usr/local/bin/tern migrate \
+            --host "$DB_HOST" \
+            --port "$DB_PORT" \
+            --user "$DB_USER" \
+            --password "$DB_PASSWORD" \
+            --database "$DB_NAME" \
+            --migrations /app/migrations
+
+        env:
+          - name: DB_HOST
+            valueFrom:
+              secretKeyRef:
+                name: db-secrets
+                key: host
+          - name: DB_PORT
+            valueFrom:
+              secretKeyRef:
+                name: db-secrets
+                key: port
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: db-secrets
+                key: user
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: db-secrets
+                key: password
+          - name: DB_NAME
+            valueFrom:
+              secretKeyRef:
+                name: db-secrets
+                key: dbname
+      containers:
+      - name: main-app
+        image: morheus/rest_example:latest
+        ports:
+          - containerPort: 8080
+        env:
+          - name: DB_HOST
+            valueFrom:
+              secretKeyRef:
+                name: db-secrets
+                key: host
+          - name: DB_PORT
+            valueFrom:
+              secretKeyRef:
+                name: db-secrets
+                key: port
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: db-secrets
+                key: user
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: db-secrets
+                key: password
+          - name: DB_NAME
+            valueFrom:
+              secretKeyRef:
+                name: db-secrets
+                key: dbname

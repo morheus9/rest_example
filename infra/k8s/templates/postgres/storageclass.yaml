@@ -1,0 +1,21 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: local-storage
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+
+#For dinamic creation pv
+#apiVersion: storage.k8s.io/v1
+#kind: StorageClass
+#metadata:
+#  name: fast
+#provisioner: kubernetes.io/aws-ebs  # Для AWS EBS
+#parameters:
+#  type: gp2
+#volumeBindingMode: WaitForFirstConsumer
+
+# Для других провайдеров:
+# GCP: kubernetes.io/gce-pd
+# Azure: kubernetes.io/azure-disk
+# NFS: Используйте сторонние provisioner, например, nfs-client.

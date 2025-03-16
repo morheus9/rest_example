@@ -1,8 +1,10 @@
 package http
 
 import (
+	"log/slog"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 func NewRouter(handler *Handler) http.Handler {
@@ -23,5 +25,41 @@ func NewRouter(handler *Handler) http.Handler {
 		handler.GetUser(w, r, id)
 	})
 
-	return mux
+	// Обернуть маршрутизатор в middleware для логирования
+	return LoggerMiddleware(mux)
+}
+
+// LoggerMiddleware добавляет логирование для каждого запроса.
+func LoggerMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		start := time.Now()
+
+		slog.Info("Request started",
+			"method", r.Method,
+			"path", r.URL.Path,
+			"remote_addr", r.RemoteAddr,
+		)
+
+		// Используем ResponseWriter для захвата статуса ответа
+		rw := &responseWriter{w, http.StatusOK}
+		next.ServeHTTP(rw, r)
+
+		slog.Info("Request completed",
+			"method", r.Method,
+			"path", r.URL.Path,
+			"status", rw.status,
+			"duration", time.Since(start),
+		)
+	})
+}
+
+// responseWriter используется для захвата статуса ответа
+type responseWriter struct {
+	http.ResponseWriter
+	status int
+}
+
+func (rw *responseWriter) WriteHeader(code int) {
+	rw.status = code
+	rw.ResponseWriter.WriteHeader(code)
 }
