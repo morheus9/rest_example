@@ -1,4 +1,4 @@
-# Just easy server app on go.
+# Just easy server on go.
 Stack
 - postgress
 - pgx
