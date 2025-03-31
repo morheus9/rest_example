@@ -44,31 +44,31 @@ Create postgres:
 cd infra/k8s/templates/postgres
 kubectl apply -f .
 ```
-Проверьте, что StatefulSet и Pod запущены:
+Check that StatefulSet and Pod are running:
 ```
 kubectl get statefulset
 kubectl get pods
 ```
-Проверьте PersistentVolume и PersistentVolumeClaim:
+Check PersistentVolume and PersistentVolumeClaim:
 ```
 kubectl get pv
 kubectl get pvc
 ```
-Установите приложение:
+Install the app:
 ```
 cd infra/k8s/templates/backend
 kubectl apply -f .
 ```
-Проверьте приложение:
+Check the app:
 ```
 kubectl get pods
 ```
 #### Test the API using curl or Postman:
-Можно проверить логи миграций:
+You can check the migration logs:
 ```
 kubectl logs myapp-95cc5b679-m2j2j -c db-migrate
 ```
-Зайти в контейнер, например:
+Go into the container, for example:
 ```
 kubectl exec -it myapp-95cc5b679-66lgt -- sh
 ```
