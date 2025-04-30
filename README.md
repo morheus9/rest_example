@@ -6,32 +6,34 @@ Stack
 - slog
 ## Launch and testing
 #### Instal dependencies:
-```go mod tidy```
+```bash
+go mod tidy
+```
 #### Check env file parametres in folder infra
 #### Start postgres and pgadmin from docker compose or podman-compose
-```
+```bash
 cd infra
 podman-compose -f docker-compose-postgres.yaml up
 ```
 #### For delete volumes:
-```
+```bash
 podman-compose -f docker-compose-postgres.yaml  down --volumes
 ```
 #### Appy migrations from tern. This is to apply migration to create the users table:
-```
+```bash
 go install github.com/jackc/tern/v2@latest
 export PATH=$PATH:$HOME/go/bin
 cd migrations && tern migrate ./
 ```
 #### Start server:
-```
+```bash
 go run cmd/server/main.go
 ```
 ________________________________________________________________
 
 #### For kubernetes
 Create secret for postgres:
-```
+```bash
 kubectl create secret generic db-secrets \
   --from-literal=host=postgres \
   --from-literal=port=5432 \
@@ -40,43 +42,43 @@ kubectl create secret generic db-secrets \
   --from-literal=dbname=postgres
 ```
 Create postgres:
-```
+```bash
 cd infra/k8s/templates/postgres
 kubectl apply -f .
 ```
 Check that StatefulSet and Pod are running:
-```
+```bash
 kubectl get statefulset
 kubectl get pods
 ```
 Check PersistentVolume and PersistentVolumeClaim:
-```
+```bash
 kubectl get pv
 kubectl get pvc
 ```
 Install the app:
-```
+```bash
 cd infra/k8s/templates/backend
 kubectl apply -f .
 ```
 Check the app:
-```
+```bash
 kubectl get pods
 ```
 #### Test the API using curl or Postman:
 You can check the migration logs:
-```
+```bash
 kubectl logs myapp-95cc5b679-m2j2j -c db-migrate
 ```
 Go into the container, for example:
-```
+```bash
 kubectl exec -it myapp-95cc5b679-66lgt -- sh
 ```
 - Create user:
-```
+```bash
 curl -X POST -H "Content-Type: application/json" -d '{"name": "John Doe", "email": "john@example.com"}' http://localhost:8080/users
 ```
 - Get a user:
-```
+```bash
 curl http://localhost:8080/users/1
 ```
